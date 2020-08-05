@@ -1,0 +1,230 @@
+
+   120
+    vector<vector<int>> minDepth(vector<vector<int>> &v){
+        vector<vector<int>> dp = v;
+        for (int i = 1; i < dp.size(); i++){
+            for (int j = 0; j < dp[i].size(); j++){
+                if (j == 0){
+                    dp[i][j] = dp[i - 1][j] + v[i][j];
+                }
+                else if (j == dp[i].size() - 1){
+                    dp[i][j] = dp[i - 1][j - 1] + v[i][j];
+                }
+                else{
+                    dp[i][j] = min(dp[i - 1][j], p[i - 1][j - 1]) + v[i][j];
+                }
+            }
+        }
+        int n = dp.size() - 1;
+        sort(dp[n].begin(), dp[n].end());
+        return dp[n][0];
+    }
+	
+	
+	121
+int helper(vector<int> v){
+	int ans = v[0];
+	int v_min = v[0];
+	for (int i = 1; i < v.size(); i++){
+		if (v[i] > v_min){
+			ans = max(ans, v[i] - v_min);
+		}
+		else{
+			v_min = v[i];
+		}
+	}
+	
+	return ans > 0 ? ans : 0;
+}
+
+
+129
+int sumNumbers(TreeNode *root, int tmp){
+    if (root == nullptr){
+        return 0;
+    }
+    if (root->left == nullptr && root>right == nullptr){
+        tmp = tmp * 10 + root->val;
+        return tmp;
+    }
+
+    return sumNumbers(root->left, sum) + sumNumbers(root->right, sum);
+}
+
+
+130
+vector<vector<char>> isVisted; // -1 : not visted,  1 : keep
+
+void init(){
+    isVisted = matrix;
+    for (auto &vec : isVisted){
+        for (auto &element : vec){
+            element = -1;
+        }
+    }
+}
+
+void helper(vector<vector<char>> matrix, int row, int col){
+    isVisted[row][col] = 1;
+    if (matrix[row][col] == 'X'){
+        return;
+    }
+    
+    if (row + 1 < matrix.size() && isVisted[row + 1][col] == -1){
+        helper(matrix, row + 1, col);
+    }
+    if (row - 1 >= 0 && isVisted[row - 1][col] == -1){
+        helper(matrix,row - 1, col);
+    }
+    if (col + 1 < matrix[0].size() && isVisted[row][col + 1] == -1){
+        helper(matrix, row, col + 1);
+    }
+    if (col - 1 >= 0 && isVisted[row][col - 1] == -1){
+        helper(matrix, row , col - 1);
+    }
+
+    return;
+}
+
+void main(vector<vector<char>> matrix){
+    init();
+    int rows = matrix.size();
+    int cols = matrix[0].size();
+
+    for (int i = 0; i < cols; i++){
+        helper(matrix, 0, i);
+        helper(matrix, rows - 1, i);
+    }
+
+    for (int i = 0; i < rows; i++){
+        helper(matrix, i, 0);
+        helper(matrix, i, cols - 1);
+    }
+
+    for (auto &vec : isVisted){
+        for (auto &element : vec){
+            if (element != 1 && matrix[row][col] == 'O'){
+                matrix[row][col] == 'X';
+            }
+        }
+    }
+
+    return;
+}
+
+131
+vector<vector<string>>ans;
+
+int main(string str){
+    if (str.empty()){
+        return ans;
+    }
+    vector<string>cur;
+    helper(str, 0, str.size(), cur);
+    return ans;
+}
+
+void helper(string str, int start, int end, vector<string>cur){
+    if (start == end){
+        ans.push_back(cur);
+        return;
+    }
+    for (int i = start; i < end; i++){
+        string tmp = str.substr(start,i - start + 1);
+        if (isPalindrom(tmp)){
+            cur.push_back(tmp);
+            helper(str,i+1,end,cur);
+            cur.pop_back();
+        }
+    }
+}
+
+bool isPalindrom(string str){
+    int left = 0;
+    int right = str.size() - 1;
+    while (left <= right){
+        if (str[left] != str[right]){
+            return false;
+        }
+    }
+    return true;
+}
+
+
+133
+unordered_set<Node*> mySet;
+
+Node* clone(Node *root){
+    if (root == nullptr){
+        return;
+    }
+    if (mySet.find(root) != mySet.end()){
+        return;
+    }
+    Node *cloneHead = New Node(root->val, vector<Node*>());
+    mySet.add(cloneHead);
+    for (auto &node : root->neibours){
+		cloneHead->neibours.push_back(clone(node));
+    }
+
+    return cloneHead;
+}
+
+139
+dp[i] 前i个可以拆分 i,j如果可以则dp[j] 就可以
+bool check(string str, vector<string> words,int start, int end){
+	for (auto &s:words){
+		if (str.substr(start, end-start+1) == str){
+			return true;
+		}
+	}
+	return false;
+}
+bool helper(string str, vector<string> words)
+{
+	vector<bool>dp(n,0);
+	dp[0] = true;
+	for (int i = 0; i < n; i++){
+		for (int j = 0; j < i; j++){
+			if (dp[j] && check(j,i,words)){
+				dp[i] = true;
+				break;
+			}	
+		}
+	}	
+	return dp[n];
+}
+
+141
+bool helper(LinkNode*head){
+	LinkNode *slow = head;
+	LinkNode *fast = head;
+	while (fast && fast->next){
+		slow = slow->next;
+		fast = fast->next->next
+		if (slow == fast){
+			return true;
+		}
+	}
+	return false;
+}
+142
+//hashmap不考虑了，随便写
+//双指针法
+int helper(LinkNode *head){
+	LinkNode *slow = head;
+	LinkNode *fast = head;
+	while (fast && fast->next){
+		slow = slow->next;
+		fast = fast->next->next
+		if (slow == fast){
+			LinkNode *fast = head;
+			while (slow != fast){
+				slow = slow->next;
+				fast = fast->next;
+			}
+			return slow;
+		}
+	}
+	return -1;
+}
